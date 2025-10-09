@@ -11,6 +11,7 @@ import {
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
 import React from "react";
+import { Link } from "react-router";
 export default function Login() {
 
     return<>
@@ -22,7 +23,10 @@ export default function Login() {
             Enter your email below to login to your account
           </CardDescription>
           <CardAction>
-            <Button variant="link">Sign Up</Button>
+            <Link to={"/SignUP"}>
+            
+             <Button variant="link">Sign Up</Button>
+            </Link>
           </CardAction>
         </CardHeader>
         <CardContent>
@@ -53,12 +57,18 @@ export default function Login() {
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-2">
+          <Link to={""}>
           <Button type="submit" className="w-full">
             Login
-          </Button>
+          </Button>          
+          </Link>
+          <Link>
           <Button variant="outline" className="w-full">
             Login with Google
-          </Button>
+          </Button>          
+          </Link>
+
+
         </CardFooter>
       </Card>
  </div>
