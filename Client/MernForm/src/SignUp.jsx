@@ -10,10 +10,12 @@ import {
 } from "@/components/ui/card";
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import axios from "axios";
+import { FailAlert, SuccessAlert } from "./alerts";
 export default function SignUp() {
+  const [alerts, setalert] = useState("");
   const navigate = useNavigate();
   const [FormData, setFormData] = useState({
     FullName: "",
@@ -25,6 +27,7 @@ export default function SignUp() {
     New_Password: "",
     New_Again_Password: "",
   });
+
   const debounce = (func, delay) => {
     let timeoutid;
     return (e) => {
@@ -36,25 +39,37 @@ export default function SignUp() {
 
   const SignUpForm = async (e) => {
     e.preventDefault();
-try {
-  
-  axios.post("http://localhost:3000/signup", FormData).then((response) => {
-      console.log( "this is response *** ", response);
-      if (response.status === 201) {
-        navigate("/");
-      }
-    });
-} catch (error) {
-console.log(error.response?.data?.message);
 
-  
-  
-}
-    
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/signup",
+        FormData
+      );
+
+      if (response.status === 201) {
+        setalert(true);
+        setTimeout(() => {
+          navigate("/");
+          setalert("");
+        }, 1500);
+      }
+    } catch (err) {
+      setTimeout(() => {
+        setalert(false);
+      }, 1500);
+      setTimeout(() => {
+        setalert("");
+      }, 7000);
+    }
   };
 
   return (
     <>
+
+      <div className="fixed top-5 right-[5%] z-50 ">
+        {alerts === true ? <SuccessAlert />: alerts === false ? <FailAlert /> : ""}
+      </div>
+
       <div className="flex justify-center align-middle mt-[5%]">
         <Card className="w-full max-w-2xl">
           <form onSubmit={SignUpForm}>
@@ -86,7 +101,7 @@ console.log(error.response?.data?.message);
                     }, 1000)}
                   />
                 </div>
-                {/*  */}
+                
                 <div className="grid gap-2">
                   <Label htmlFor="Username">Username</Label>
                   <Input

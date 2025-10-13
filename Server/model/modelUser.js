@@ -47,6 +47,7 @@ const mongoose = require("mongoose");
   New_Again_Password: {
     type: String,
     required: true,
+    
   },
 });
 
