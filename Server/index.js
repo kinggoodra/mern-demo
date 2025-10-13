@@ -1,16 +1,12 @@
 const express= require("express")
 const app = express()
 const mongoose= require("mongoose")
+const cors= require("cors")
+const userRouters=require("./userRouters")
+app.use(cors())
+app.use(express.json())
+app.use("/",userRouters)
 
-app.get("/",(req,res)=>{
-    const today = new Date("2004-12-05");
-    
-    const minDate = new Date();
-        res.send(`${ new Date(minDate-today) } `);
-
-
-
-})
 mongoose.connect("mongodb://localhost:27017/MERNDemo").then(()=>{
     console.log("Connected to MongoDB");
 }).catch((err)=>{

@@ -12,7 +12,8 @@ const mongoose = require("mongoose");
   Contact_Number: {
     type: Number,
     required: true,
-    max: [10, "Contact number should be 10 digits"],
+    min: [1000000000, "Contact number should be exactly 10 digits"],
+  max: [9999999999, "Contact number should be exactly 10 digits"],
   },
   Date_of_Birth: {
     type: Date,
@@ -50,5 +51,5 @@ const mongoose = require("mongoose");
 });
 
 module.exports={
-    FormUser:mongoose.model("FormUser",FormUser)
+    FormUserModel:mongoose.model("FormUser",FormUser)
 }

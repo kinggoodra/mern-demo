@@ -11,8 +11,10 @@ import {
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import axios from "axios";
 export default function SignUp() {
+  const navigate = useNavigate();
   const [FormData, setFormData] = useState({
     FullName: "",
     Username: "",
@@ -28,31 +30,46 @@ export default function SignUp() {
     return (e) => {
       clearTimeout(timeoutid);
 
-      timeoutid = setTimeout(
-        () => setFormData({ ...FormData, [e.target.id]: e.target.value }),
-        delay
-      );
+      timeoutid = setTimeout(() => func(e), delay);
     };
   };
-  console.log(FormData);
+
+  const SignUpForm = async (e) => {
+    e.preventDefault();
+try {
+  
+  axios.post("http://localhost:3000/signup", FormData).then((response) => {
+      console.log( "this is response *** ", response);
+      if (response.status === 201) {
+        navigate("/");
+      }
+    });
+} catch (error) {
+console.log(error.response?.data?.message);
+
+  
+  
+}
+    
+  };
 
   return (
     <>
       <div className="flex justify-center align-middle mt-[5%]">
         <Card className="w-full max-w-2xl">
-          <CardHeader>
-            <CardTitle>Registration</CardTitle>
-            <CardDescription>
-              Fill details to create a new account
-            </CardDescription>
-            <CardAction>
-              <Link to={"/"}>
-                <Button variant="link">Sign Up</Button>
-              </Link>
-            </CardAction>
-          </CardHeader>
-          <CardContent>
-            <form action={""}>
+          <form onSubmit={SignUpForm}>
+            <CardHeader>
+              <CardTitle>Registration</CardTitle>
+              <CardDescription>
+                Fill details to create a new account
+              </CardDescription>
+              <CardAction>
+                <Link to={"/"}>
+                  <Button variant="link">Login</Button>
+                </Link>
+              </CardAction>
+            </CardHeader>
+            <CardContent>
               <div className="grid grid-cols-2 gap-6">
                 <div className="grid gap-2">
                   <Label htmlFor="FullName">Full Name</Label>
@@ -61,10 +78,15 @@ export default function SignUp() {
                     type="text"
                     placeholder="Enter full your name"
                     required
-                    onChange={debounce((e) => e, 500)}
+                    onChange={debounce((e) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        [e.target.id]: e.target.value,
+                      }));
+                    }, 1000)}
                   />
                 </div>
-
+                {/*  */}
                 <div className="grid gap-2">
                   <Label htmlFor="Username">Username</Label>
                   <Input
@@ -72,7 +94,12 @@ export default function SignUp() {
                     type="text"
                     placeholder="Enter your username"
                     required
-                    onChange={debounce((e) => e, 500)}
+                    onChange={debounce((e) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        [e.target.id]: e.target.value,
+                      }));
+                    }, 1000)}
                   />
                 </div>
 
@@ -83,7 +110,12 @@ export default function SignUp() {
                     type="tel"
                     placeholder="Contact Number"
                     required
-                    onChange={debounce((e) => e, 500)}
+                    onChange={debounce((e) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        [e.target.id]: e.target.value,
+                      }));
+                    }, 1000)}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -93,7 +125,12 @@ export default function SignUp() {
                     type="date"
                     placeholder="Date of Birth"
                     required
-                    onChange={debounce((e) => e, 500)}
+                    onChange={debounce((e) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        [e.target.id]: e.target.value,
+                      }));
+                    }, 1000)}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -103,7 +140,12 @@ export default function SignUp() {
                     type="text"
                     placeholder="Enter your address"
                     required
-                    onChange={debounce((e) => e, 500)}
+                    onChange={debounce((e) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        [e.target.id]: e.target.value,
+                      }));
+                    }, 1000)}
                   />
                 </div>
 
@@ -114,7 +156,12 @@ export default function SignUp() {
                     type="email"
                     placeholder="m@example.com"
                     required
-                    onChange={debounce((e) => e, 500)}
+                    onChange={debounce((e) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        [e.target.id]: e.target.value,
+                      }));
+                    }, 1000)}
                   />
                 </div>
 
@@ -125,7 +172,12 @@ export default function SignUp() {
                     type="password"
                     required
                     placeholder="Enter new password"
-                    onChange={debounce((e) => e, 500)}
+                    onChange={debounce((e) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        [e.target.id]: e.target.value,
+                      }));
+                    }, 1000)}
                   />
                 </div>
 
@@ -138,19 +190,22 @@ export default function SignUp() {
                     type="password"
                     required
                     placeholder="Confirm New Password"
-                    onChange={debounce((e) => e, 500)}
+                    onChange={debounce((e) => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        [e.target.id]: e.target.value,
+                      }));
+                    }, 1000)}
                   />
                 </div>
               </div>
-            </form>
-          </CardContent>
-          <CardFooter className="flex-col gap-2">
-            <Link to={""}>
+            </CardContent>
+            <CardFooter className="flex-col mt-10 gap-2">
               <Button type="submit" className="w-full">
                 Submit
               </Button>
-            </Link>
-          </CardFooter>
+            </CardFooter>
+          </form>
         </Card>
       </div>
     </>
