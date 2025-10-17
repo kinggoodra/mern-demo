@@ -47,15 +47,19 @@ export default function SignUp() {
       );
 
       if (response.status === 201) {
-        setalert(true);
         setTimeout(() => {
-          navigate("/");
-          setalert("");
+          setalert([true, ""]);
         }, 1500);
+        setTimeout(() => {
+          setalert("");
+          setTimeout(() => {
+            // navigate("/");
+          }, 3000);
+        }, 3000);
       }
     } catch (err) {
       setTimeout(() => {
-        setalert(false);
+        setalert([false, err.response.data]);
       }, 1500);
       setTimeout(() => {
         setalert("");
@@ -65,9 +69,14 @@ export default function SignUp() {
 
   return (
     <>
-
-      <div className="fixed top-5 right-[5%] z-50 ">
-        {alerts === true ? <SuccessAlert />: alerts === false ? <FailAlert /> : ""}
+      <div className="fixed top-5  right-[5%] z-50 ">
+        {alerts[0] === true ? (
+          <SuccessAlert />
+        ) : alerts[0] === false ? (
+          <FailAlert alerts={alerts[1]} />
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="flex justify-center align-middle mt-[5%]">
@@ -98,10 +107,11 @@ export default function SignUp() {
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
-                    }, 1000)}
+                    }, 800)
+                  }
                   />
                 </div>
-                
+
                 <div className="grid gap-2">
                   <Label htmlFor="Username">Username</Label>
                   <Input
@@ -114,7 +124,7 @@ export default function SignUp() {
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
-                    }, 1000)}
+                    }, 800)}
                   />
                 </div>
 
@@ -130,7 +140,7 @@ export default function SignUp() {
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
-                    }, 1000)}
+                    }, 800)}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -145,7 +155,7 @@ export default function SignUp() {
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
-                    }, 1000)}
+                    }, 800)}
                   />
                 </div>
                 <div className="grid gap-2">
@@ -160,7 +170,7 @@ export default function SignUp() {
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
-                    }, 1000)}
+                    }, 800)}
                   />
                 </div>
 
@@ -176,7 +186,7 @@ export default function SignUp() {
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
-                    }, 1000)}
+                    }, 800)}
                   />
                 </div>
 
@@ -192,7 +202,7 @@ export default function SignUp() {
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
-                    }, 1000)}
+                    }, 800)}
                   />
                 </div>
 
@@ -210,7 +220,7 @@ export default function SignUp() {
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
-                    }, 1000)}
+                    }, 800)}
                   />
                 </div>
               </div>
