@@ -1,5 +1,9 @@
 const { body } = require("express-validator");
-class Validator {
+const multer = require("multer");
+const path = require("path");
+
+
+class Validator  {
   validationRegistration = [
     body("FullName")
       .notEmpty()
@@ -62,7 +66,16 @@ class Validator {
         }
         return true;
       }),
+         body("Resume").custom((value, { req }) => {
+      if (!req.file) {
+        throw new Error("Resume file is required");
+      }
+      return true;
+    }),
   ];
 }
+
+
 const { validationRegistration } = new Validator();
-module.exports = { validationRegistration };
+
+module.exports = { validationRegistration};

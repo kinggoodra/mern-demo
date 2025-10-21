@@ -39,6 +39,9 @@ const FormUser = new mongoose.Schema({
   New_Again_Password: {
     type: String,
   },
+CloudinaryPublicURLSecure:{
+  type:String
+}
 });
 
 module.exports = {

@@ -10,14 +10,15 @@ import {
 } from "@/components/ui/card";
 import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import axios from "axios";
 import { FailAlert, SuccessAlert } from "./alerts";
 export default function SignUp() {
   const [alerts, setalert] = useState("");
+
   const navigate = useNavigate();
-  const [FormData, setFormData] = useState({
+  const [Inputvalues, setInputvalues] = useState({
     FullName: "",
     Username: "",
     Contact_Number: "",
@@ -26,6 +27,7 @@ export default function SignUp() {
     email: "",
     New_Password: "",
     New_Again_Password: "",
+    Resume: null,
   });
 
   const debounce = (func, delay) => {
@@ -39,11 +41,15 @@ export default function SignUp() {
 
   const SignUpForm = async (e) => {
     e.preventDefault();
-
+    const formData = new FormData();
+    for (const key in Inputvalues) {
+      formData.append(key, Inputvalues[key]);
+    }
     try {
       const response = await axios.post(
         "http://localhost:3000/signup",
-        FormData
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
 
       if (response.status === 201) {
@@ -101,14 +107,12 @@ export default function SignUp() {
                     id="FullName"
                     type="text"
                     placeholder="Enter full your name"
-                    required
                     onChange={debounce((e) => {
-                      setFormData((prev) => ({
+                      setInputvalues((prev) => ({
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
-                    }, 800)
-                  }
+                    }, 800)}
                   />
                 </div>
 
@@ -118,9 +122,8 @@ export default function SignUp() {
                     id="Username"
                     type="text"
                     placeholder="Enter your username"
-                    required
                     onChange={debounce((e) => {
-                      setFormData((prev) => ({
+                      setInputvalues((prev) => ({
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
@@ -134,9 +137,8 @@ export default function SignUp() {
                     id="Contact_Number"
                     type="tel"
                     placeholder="Contact Number"
-                    required
                     onChange={debounce((e) => {
-                      setFormData((prev) => ({
+                      setInputvalues((prev) => ({
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
@@ -149,9 +151,8 @@ export default function SignUp() {
                     id="Date_of_Birth"
                     type="date"
                     placeholder="Date of Birth"
-                    required
                     onChange={debounce((e) => {
-                      setFormData((prev) => ({
+                      setInputvalues((prev) => ({
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
@@ -164,9 +165,8 @@ export default function SignUp() {
                     id="Address"
                     type="text"
                     placeholder="Enter your address"
-                    required
                     onChange={debounce((e) => {
-                      setFormData((prev) => ({
+                      setInputvalues((prev) => ({
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
@@ -180,9 +180,8 @@ export default function SignUp() {
                     id="email"
                     type="email"
                     placeholder="m@example.com"
-                    required
                     onChange={debounce((e) => {
-                      setFormData((prev) => ({
+                      setInputvalues((prev) => ({
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
@@ -195,10 +194,9 @@ export default function SignUp() {
                   <Input
                     id="New_Password"
                     type="password"
-                    required
                     placeholder="Enter new password"
                     onChange={debounce((e) => {
-                      setFormData((prev) => ({
+                      setInputvalues((prev) => ({
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
@@ -213,14 +211,28 @@ export default function SignUp() {
                   <Input
                     id="New_Again_Password"
                     type="password"
-                    required
                     placeholder="Confirm New Password"
                     onChange={debounce((e) => {
-                      setFormData((prev) => ({
+                      setInputvalues((prev) => ({
                         ...prev,
                         [e.target.id]: e.target.value,
                       }));
                     }, 800)}
+                  />
+                </div>
+
+                <div className="grid gap-2">
+                  <Label htmlFor="Resume">Upload your Resume</Label>
+                  <Input
+                    id="Resume"
+                    type="file"
+                    placeholder="Upload your Resume file"
+                    onChange={(e) => {
+                      setInputvalues((prev) => ({
+                        ...prev,
+                        [e.target.id]: e.target.files[0],
+                      }));
+                    }}
                   />
                 </div>
               </div>
