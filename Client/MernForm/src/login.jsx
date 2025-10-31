@@ -1,4 +1,6 @@
 import { Button } from "./components/ui/button";
+import { FcGoogle } from "react-icons/fc";
+import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import {
   Card,
   CardAction,
@@ -12,6 +14,7 @@ import { Input } from "./components/ui/input";
 import { Label } from "./components/ui/label";
 import React, { useState } from "react";
 import { Link } from "react-router";
+import axios from "axios";
 export default function Login() {
   const [LoginData, setLoginData] = useState({});
   function debounce(func, timer) {
@@ -22,14 +25,16 @@ export default function Login() {
     };
   }
 
-  const LoginAccount = () => {};
+  const LoginAccount = () => {
+    const response = axios.get("http://localhost:3000/");
+  };
   const debouncedChange = debounce((e) => {
     setLoginData((val) => ({
       ...val,
       [e.target.id]: e.target.value,
     }));
   }, 1500);
-  
+
   return (
     <>
       <div className="flex justify-center align-middle mt-[10%]">
@@ -54,7 +59,6 @@ export default function Login() {
                     id="email"
                     type="email"
                     placeholder="m@example.com"
-                    required
                     onChange={debouncedChange}
                   />
                 </div>
@@ -68,7 +72,7 @@ export default function Login() {
                       Forgot your password?
                     </a>
                   </div>
-                  <Input id="password" type="password" required />
+                  <Input id="password" type="password" />
                 </div>
               </div>
               <CardFooter className="flex-col mt-5 gap-2">
@@ -77,11 +81,43 @@ export default function Login() {
                     Login
                   </Button>
                 </Link>
-                <Link>
-                  <Button variant="outline" className="w-full">
+                <div className="grid grid-cols-2  gap-2 w-full ">
+                  <Button
+                    variant="outline"
+                    className="w-full gap-1"
+                    onClick={() =>
+                      (window.location.href =
+                        "http://localhost:3000/auth/google")
+                    }
+                  >
+                    <FcGoogle />
                     Login with Google
                   </Button>
-                </Link>
+
+                  <Button
+                    variant="outline"
+                    className="w-full gap-1"
+                    onClick={() =>
+                      (window.location.href =
+                        "http://localhost:3000/auth/linkedin")
+                    }
+                  >
+                    <AiFillLinkedin style={{ color: "#0077B5" }} />
+                    Login with Linkedin
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    className="w-full gap-1"
+                    onClick={() =>
+                      (window.location.href =
+                        "http://localhost:3000/auth/github")
+                    }
+                  >
+                    <AiFillGithub style={{ color: "#171515" }} />
+                    Login with Github
+                  </Button>
+                </div>
               </CardFooter>
             </form>
           </CardContent>
