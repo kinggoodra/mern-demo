@@ -8,17 +8,15 @@ Cloudinary.config({
   secure: true,
 });
 
-
 const UploadCloudinary = async (filePath) => {
   try {
     if (!filePath) return null;
     const Response = await Cloudinary.uploader.upload(filePath, {
       resource_type: "auto",
     });
-
     return Response;
   } catch (error) {
-    console.log(" this is errorsss" + error);
+    return error;
   }
 };
 

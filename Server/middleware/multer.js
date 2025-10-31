@@ -1,7 +1,6 @@
 const fs = require("fs");
 const multer = require("multer");
 const path = require("path");
-
 class uploader {
   #folder = path.join(__dirname, "../uploads");
   constructor() {
@@ -20,11 +19,9 @@ class uploader {
       cb(null, `${Date.now()}_${path.extname(file.originalname)}`);
     },
   });
-
   limits = {
     fileSize: 1024 * 1024 * 50,
   };
-
   upload = multer({
     storage: this.storage,
     limits: this.limits,
@@ -32,3 +29,4 @@ class uploader {
 }
 const { upload } = new uploader();
 module.exports = upload;
+
