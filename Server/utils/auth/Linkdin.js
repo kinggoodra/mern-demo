@@ -51,7 +51,7 @@ const LinkedinAccessToken = async (code) => {
     {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
-      },
+      } ,
     }
   );
 
