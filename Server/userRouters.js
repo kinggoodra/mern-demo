@@ -1,11 +1,11 @@
 const passport = require("passport");
 
 const express = require("express");
-const { PostUser } = require("./controller/userController");
+const { PostUser, GetUser } = require("./controller/userController");
 const { validationRegistration } = require("./middleware/validator");
 const upload = require("./middleware/multer");
 const { Linkedin, LinkedinCallback } = require("./utils/auth/Linkdin");
-const { Github, GithubCallback } = require("./utils/auth/Github");
+const { jwtGoogle, jwtGithub } = require("./middleware/jwt");
 const userRouters = express.Router();
 require("dotenv").config();
 userRouters.post(
@@ -23,25 +23,30 @@ userRouters.get(
 userRouters.get(
   "/auth/google/callback",
   passport.authenticate("google", {
+    session: false,
     failureRedirect: "http://localhost:5173/",
-    successRedirect: "http://localhost:5173/dashboard",
+  }),
+  jwtGoogle
+);
+userRouters.get("/auth/linkedin", Linkedin);
+
+userRouters.get("/auth/linkedin/callback", LinkedinCallback);
+
+userRouters.get(
+  "/auth/github",
+  passport.authenticate("github", {
+    scope: ["user", "repo"],
   })
 );
-userRouters.get(
-  "/auth/linkedin",Linkedin)
 
 userRouters.get(
-  "/auth/linkedin/callback",LinkedinCallback)
-
-userRouters.get(
-  "/auth/github",passport.authenticate("github", {
-    scope: ["user","repo"],
-  }))
-
-userRouters.get(
-  "/auth/github/callback",  passport.authenticate("github", {
+  "/auth/github/callback",
+  passport.authenticate("github", {
+    session: false,
     failureRedirect: "http://localhost:5173/",
-    successRedirect: "http://localhost:5173/dashboard",
-  }))
+  }),
+  jwtGithub
+);
+userRouters.post("/",GetUser)
 
 module.exports = userRouters;

@@ -1,5 +1,6 @@
 const passport = require("passport");
 const { OAuthSchemaGoogle } = require("../../model/OAuthModel");
+const { jwtToken } = require("../../middleware/jwt");
 
 require("dotenv").config();
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
@@ -23,8 +24,8 @@ passport.use(
         email: profile._json.email,
         email_verified: profile._json.email_verified,
       });
-
-      return cb(null, profile);
+const token = await jwtToken(profile.id,profile.diplayName,profile.emails[0].value,"google")
+      return cb(null, profile,{token});
     }
   )
 );

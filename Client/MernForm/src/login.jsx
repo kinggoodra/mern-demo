@@ -25,15 +25,19 @@ export default function Login() {
     };
   }
 
-  const LoginAccount = () => {
-    const response = axios.get("http://localhost:3000/");
+  const LoginAccount = async () => {
+    const response = await axios.post("http://localhost:3000/", LoginData, {
+      withCredentials: true,
+    });
+    console.log(response);
+    
   };
   const debouncedChange = debounce((e) => {
     setLoginData((val) => ({
       ...val,
       [e.target.id]: e.target.value,
     }));
-  }, 1500);
+  }, 1000);
 
   return (
     <>
@@ -72,15 +76,18 @@ export default function Login() {
                       Forgot your password?
                     </a>
                   </div>
-                  <Input id="password" type="password" />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="password"
+                    onChange={debouncedChange}
+                  />
                 </div>
               </div>
               <CardFooter className="flex-col mt-5 gap-2">
-                <Link to={""}>
-                  <Button type="submit" className="w-full">
-                    Login
-                  </Button>
-                </Link>
+                <Button type="submit" className="w-full">
+                  Login
+                </Button>
                 <div className="grid grid-cols-2  gap-2 w-full ">
                   <Button
                     variant="outline"
