@@ -45,7 +45,6 @@ const LinkedinCallback = async (req, res) => {
   }
 
   const token = await jwtToken(data.sub, data.name, data.email, "Linkedin");
-  console.log(token);
   
   res.cookie("Linkedin", token, {
     maxAge: 60 * 60 * 1000,
